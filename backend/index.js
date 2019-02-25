@@ -1,7 +1,8 @@
 require("dotenv").config();
 const Koa = require("koa");
+const serve = require("koa-static");
 const Router = require("koa-router");
-const cors = require('@koa/cors');
+const cors = require("@koa/cors");
 const jwt = require("koa-jwt");
 const { ApolloServer } = require("apollo-server-koa");
 const typeDefs = require("./graphql/typeDefs");
@@ -21,6 +22,10 @@ app.use(router.allowedMethods());
 
 // jwt
 app.use(jwt({ secret: process.env.JWT_SECRET, passthrough: true }));
+
+// static
+app.use(serve(__dirname + "/uploads"));
+app.use(serve(__dirname + "/../frontend/dist"));
 
 const server = new ApolloServer({
   typeDefs,

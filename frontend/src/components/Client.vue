@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout text-xs-center wrap>
-      <v-flex xs12>
+      <v-flex xs9>
         <v-card>
           <v-alert :value="error" type="error">
             {{error}}
@@ -15,7 +15,6 @@
                 <strong>Registered at :</strong>
                 {{ client.registeredAt }}
               </h3>
-              <div></div>
             </div>
           </v-card-title>
         </v-card>
@@ -78,6 +77,16 @@
           </v-tab-item>
         </v-tabs>
       </v-flex>
+      <v-flex xs3>
+        <v-card>
+          <v-card-text>
+            <v-img v-if="client.photo" :src="photoPath()"></v-img>
+          </v-card-text>
+          <v-card-actions>
+            <input type="file" name="photo" @change="uploadPhoto">
+          </v-card-actions>
+        </v-card>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -87,7 +96,8 @@ import {
   AVAILABLE_BOOKS_QUERY,
   CLIENT_QUERY,
   TAKE_BOOKS,
-  RETURN_BOOKS
+  RETURN_BOOKS,
+  UPLOAD_PHOTO
 } from "../constants/graphql";
 
 export default {
@@ -96,7 +106,8 @@ export default {
       active: 0,
       availableBooks: [],
       client: {
-        name: null
+        name: null,
+        photo: null
       },
       toTake: [],
       toReturn: [],
@@ -116,6 +127,9 @@ export default {
     }
   },
   methods: {
+    photoPath() {
+      return process.env.VUE_APP_STATIC + this.client.photo;
+    },
     async takeBooks() {
       await this.$apollo
         .mutate({
@@ -138,6 +152,15 @@ export default {
         }
       });
       await this.$apollo.queries.availableBooks.refetch();
+      await this.$apollo.queries.client.refetch();
+    },
+    async uploadPhoto(event) {
+      await this.$apollo.mutate({
+        mutation: UPLOAD_PHOTO,
+        variables: {
+          photo: event.target.files[0]
+        }
+      });
       await this.$apollo.queries.client.refetch();
     }
   }

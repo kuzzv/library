@@ -61,6 +61,12 @@ export const ADD_AUTHOR = gql`
   }
 `;
 
+export const UPLOAD_PHOTO = gql`
+  mutation uploadPhoto($photo: Upload!) {
+    uploadPhoto(photo: $photo)
+  }
+`
+
 export const CLIENT_QUERY = gql`
   query client {
     client {

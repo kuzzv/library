@@ -50,6 +50,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
+    uploadPhoto(photo: Upload!): String!
     createBook(book: BookInput): Book
     createAuthor(author: AuthorInput): Author
     takeBooks(ids: [ID]): Client

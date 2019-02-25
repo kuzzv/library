@@ -40,6 +40,14 @@ const authAdmin = (login, password) => {
   }
 };
 
+const updatePhoto = (id, filename) => {
+  return knex("clients")
+    .update({
+      photo: filename
+    })
+    .where({ id });
+};
+
 const registerUser = async (name, password) => {
   try {
     await knex("clients").insert({
@@ -55,5 +63,6 @@ const registerUser = async (name, password) => {
 module.exports = {
   authUser,
   authAdmin,
-  registerUser
+  registerUser,
+  updatePhoto
 };

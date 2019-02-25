@@ -1,7 +1,7 @@
 const library = require("../services/library");
 const authentificator = require("../services/auth");
 const dateResolver = require("./dateResolver");
-
+const fs = require("fs");
 const resolvers = {
   Query: {
     authors(_, args, { user }) {
@@ -74,6 +74,12 @@ const resolvers = {
       }
     ) {
       return authentificator.authAdmin(login, password);
+    },
+    async uploadPhoto(_, { photo }, { user }) {
+      const { createReadStream, filename } = await photo;
+      createReadStream().pipe(fs.createWriteStream("./uploads/" + filename));
+      await authentificator.updatePhoto(user.id, filename);
+      return filename;
     },
     registerUser(
       _,

@@ -2,16 +2,11 @@ import Vue from "vue";
 import "./plugins/vuetify";
 import App from "./App.vue";
 import { ApolloClient } from "apollo-client";
-import { HttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
+const { createUploadLink } = require("apollo-upload-client");
 import VueApollo from "vue-apollo";
 
 Vue.config.productionTip = false;
-
-const httpLink = new HttpLink({
-  // You should use an absolute URL here
-  uri: process.env.VUE_APP_GRAPHQL_HOST
-});
 
 import { ApolloLink } from "apollo-link";
 const authMiddleware = new ApolloLink((operation, forward) => {
@@ -27,7 +22,9 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 });
 
 const apolloClient = new ApolloClient({
-  link: authMiddleware.concat(httpLink),
+  link: authMiddleware.concat(
+    createUploadLink({ uri: process.env.VUE_APP_GRAPHQL_HOST })
+  ),
   cache: new InMemoryCache(),
   connectToDevTools: true
 });
