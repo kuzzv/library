@@ -13,3 +13,11 @@ Got to http://localhost:4000
 
 * Database service may need some time to setup
 * Ports 5432 and 4000 should be available
+
+### Default credentials
+ #### Admin
+ * login: admin 
+ * password: password
+ #### Client
+ * login: client1 
+ * password: password
