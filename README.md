@@ -11,5 +11,5 @@ $ docker-compose exec app npx knex migrate:latest && docker-compose exec app npx
 ```
 Got to http://localhost:4000
 
-*Database service may need some time to setup
-*Ports 5432 and 4000 should be available
+* Database service may need some time to setup
+* Ports 5432 and 4000 should be available
